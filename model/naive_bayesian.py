@@ -1,34 +1,28 @@
-import pandas as pd
-from pyexpat import features
-
-from pandas import value_counts
-
-
 class NaiveBayes:
 
-    def __init__(self):
-        self.class_probs = {}
+    def __init__(self,df,classified):
+        self.class_probs = self.get_class_probs()
         self.feature_probs = {}
-        self.classes = []
-        self.features = []
+        self.classes = df[classified].unique()
+        self.df = df
+        self.features = [col for col in df.columns if col != classified]
+        self.classified = classified
 
-    def fit(self, df):
-        target = df.columns[-1]
-        self.classes = df[target].unique()
-        self.features = df.columns[:-1]
+    def get_class_probs(self):
+        class_counts = self.df[self.classified].value_counts()
+        total = len(self.df)
+        return (class_counts / total).to_dict()
 
-        class_counts = df[target].value_counts()
-        total = len(df)
-        self.class_probs = (class_counts / total).to_dict()
 
-        self.feature_probs = {feature: {} for feature in self.features}
+    def fit(self):
         for feature in self.features:
+            self.feature_probs[feature] ={}
             for cls in self.classes:
-                subset = df[df[target] == cls]
+                subset = self.df[self.df[self.classified] == cls]
                 val_counts = subset[feature].value_counts()
 
                 total_cls = len(subset)
-                unique_vals = df[feature].unique()
+                unique_vals = self.df[feature].unique()
                 smoothed_probs = {
                     val: (val_counts.get(val, 0) + 1) / (total_cls + len(unique_vals))
                     for val in unique_vals
