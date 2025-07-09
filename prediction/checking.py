@@ -15,7 +15,8 @@ class Prediction:
                 feature_dict = self.model.feature_probs[feature][cls]
                 prob *= feature_dict.get(val)
             probs[cls] = prob
-        return max(probs, key=probs.get)
+
+        return max(probs.items(), key=probs.get)
 
 
 

@@ -1,5 +1,5 @@
 from model.naive_bayesian import NaiveBayes
-from checking import Prediction
+from prediction.checking import Prediction
 from sklearn.model_selection import train_test_split
 
 
@@ -16,8 +16,7 @@ class ModelTester:
 
         for _idx, row in df.iterrows():
             input_row = {feature: row[feature] for feature in self.model.features}
-            results = self.predictor.prediction(input_row)
-            predicted = max(results, key=results.get)
+            predicted = self.predictor.prediction(input_row)
             actual = row[classifier]
             if predicted == actual:
                 correct += 1
@@ -53,8 +52,7 @@ class ModelTester:
         for i in range(total):
             row = X_test.iloc[i].to_dict()
             true_label = y_test.iloc[i]
-            results = predictor.prediction(row)
-            predicted = max(results, key=results.get)
+            predicted = predictor.prediction(row)
             if predicted == true_label:
                 correct += 1
 

@@ -1,8 +1,7 @@
 import pandas as pd
 import os
-from loadData import DataLoader
 
-class CSVLoader(DataLoader):
+class CSVLoader:
     def __init__(self,path):
         self.path = path
 

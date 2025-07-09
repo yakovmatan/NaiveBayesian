@@ -1,12 +1,12 @@
 class NaiveBayes:
 
     def __init__(self,df,classified):
+        self.df = df
+        self.classified = classified
         self.class_probs = self.get_class_probs()
         self.feature_probs = {}
         self.classes = df[classified].unique()
-        self.df = df
         self.features = [col for col in df.columns if col != classified]
-        self.classified = classified
 
     def get_class_probs(self):
         class_counts = self.df[self.classified].value_counts()
