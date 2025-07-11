@@ -1,3 +1,4 @@
+from data.loadCsv import CSVLoader
 from model.naive_bayesian import NaiveBayes
 
 
@@ -16,7 +17,7 @@ class Prediction:
                 prob *= feature_dict.get(val)
             probs[cls] = prob
 
-        return max(probs.items(), key=probs.get)
+        return max(probs, key=probs.get)
 
 
 
