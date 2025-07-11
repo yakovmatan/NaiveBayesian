@@ -1,3 +1,4 @@
+from API.server import predictor
 from data.loadCsv import CSVLoader
 from model.naive_bayesian import NaiveBayes
 from prediction.checking import Prediction
@@ -10,8 +11,11 @@ class Controller:
         self.df = self.data.load()
         self.model = NaiveBayes(self.df, 'buys_computer')
         self.model.fit()
-        self.tester = ModelTester(self.model)
         self.predictor = Prediction(self.model)
+        self.tester = ModelTester(self.model,predictor)
+
+
+
 
     def run(self):
         while True:

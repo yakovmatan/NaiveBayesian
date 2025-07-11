@@ -4,9 +4,9 @@ from sklearn.model_selection import train_test_split
 
 
 class ModelTester:
-    def __init__(self, model: NaiveBayes):
+    def __init__(self, model: NaiveBayes, predictor: Prediction):
         self.model = model
-        self.predictor = Prediction(model)
+        self.predictor = predictor
 
     def test_full_dataset_prediction(self):
         df = self.model.df
@@ -22,7 +22,7 @@ class ModelTester:
                 correct += 1
 
         accuracy = correct / total
-        print(f"Accuracy on full dataset: {accuracy*100:.2f}% ({correct}/{total})")
+        print(f"Accuracy on full dataset: {accuracy * 100:.2f}% ({correct}/{total})")
         return accuracy
 
     def test_with_train_test_split(self, test_size=0.3):
@@ -59,4 +59,5 @@ class ModelTester:
         accuracy = correct / total
         print(
             f"✅ Accuracy on test set ({int((1 - test_size) * 100)}% train / {int(test_size * 100)}% test): {accuracy:.2%}")
+        return accuracy,test_size
 
