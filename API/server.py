@@ -1,6 +1,7 @@
 import uvicorn as uv
 from fastapi import FastAPI
 from data.loadCsv import CSVLoader
+from data.clean_data import Cleaner
 from model.naive_bayesian import NaiveBayes
 from prediction.checking import Prediction
 from prediction.evalution import ModelTester
@@ -9,6 +10,7 @@ app = FastAPI()
 
 data = CSVLoader("C:/Users/User/Downloads/buy_computer_data.csv")
 df = data.load()
+df = Cleaner(df).clean_data()
 model = NaiveBayes(df, 'buys_computer')
 model.fit()
 predictor = Prediction(model)
