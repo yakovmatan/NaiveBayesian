@@ -1,3 +1,5 @@
+from logger.Logger import logger
+
 class NaiveBayes:
 
     def __init__(self,df,classified):
@@ -7,14 +9,17 @@ class NaiveBayes:
         self.feature_probs = {}
         self.classes = df[classified].unique()
         self.features = [col for col in df.columns if col != classified]
+        logger.info("NaiveBayes initialized")
 
     def get_class_probs(self):
+        logger.debug("Calculating class probabilities")
         class_counts = self.df[self.classified].value_counts()
         total = len(self.df)
         return (class_counts / total).to_dict()
 
 
     def fit(self):
+        logger.info("Fitting NaiveBayes model")
         for feature in self.features:
             self.feature_probs[feature] ={}
             for cls in self.classes:
@@ -28,5 +33,5 @@ class NaiveBayes:
                     for val in unique_vals
                 }
                 self.feature_probs[feature][cls] = smoothed_probs
-
+        logger.info("Model fitting complete")
 

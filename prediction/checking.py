@@ -1,4 +1,5 @@
 from data.loadCsv import CSVLoader
+from logger.Logger import logger
 from model.naive_bayesian import NaiveBayes
 
 
@@ -8,6 +9,7 @@ class Prediction:
         self.model = model
 
     def prediction(self, row):
+        logger.debug(f"Predicting row: {row}")
         probs = {}
         for cls in self.model.classes:
             prob = self.model.class_probs[cls]
@@ -16,8 +18,9 @@ class Prediction:
                 feature_dict = self.model.feature_probs[feature][cls]
                 prob *= feature_dict.get(val)
             probs[cls] = prob
-
-        return max(probs, key=probs.get)
+        prediction = max(probs, key=probs.get)
+        logger.info(f"Prediction: {prediction}")
+        return prediction
 
 
 

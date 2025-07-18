@@ -1,3 +1,4 @@
+from logger.Logger import logger
 from model.naive_bayesian import NaiveBayes
 from prediction.checking import Prediction
 from sklearn.model_selection import train_test_split
@@ -9,6 +10,7 @@ class ModelTester:
         self.predictor = predictor
 
     def test_full_dataset_prediction(self):
+        logger.info("Testing full dataset accuracy")
         df = self.model.df
         classifier = self.model.classified
         correct = 0
@@ -22,10 +24,11 @@ class ModelTester:
                 correct += 1
 
         accuracy = correct / total
-        print(f"Accuracy on full dataset: {accuracy * 100:.2f}% ({correct}/{total})")
+        logger.info(f"Full dataset accuracy: {accuracy:.2%}")
         return accuracy
 
     def test_with_train_test_split(self, test_size=0.3):
+        logger.info(f"Testing with train test split (test_size={test_size})")
         df = self.model.df
         X = df.drop(columns=[self.model.classified])
         y = df[self.model.classified]
@@ -52,7 +55,6 @@ class ModelTester:
                 correct += 1
 
         accuracy = correct / total
-        print(
-            f"✅ Accuracy on test set ({int((1 - test_size) * 100)}% train / {int(test_size * 100)}% test): {accuracy:.2%}")
+        logger.info(f"Train/Test split accuracy: {accuracy:.2%}")
         return accuracy,test_size
 
