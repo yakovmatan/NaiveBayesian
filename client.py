@@ -65,7 +65,7 @@ class Controller:
                 else:
                     print(f"❌ ערך לא חוקי! נסה שוב. האפשרויות הן: {allowed_str}")
 
-        res = requests.post("http://127.0.0.1:8000/predict", json=row)
+        res = requests.post("http://127.0.0.1:8001/predict", json=row)
         if res.ok:
             print(f"\n✅ התחזית: {res.json()['prediction']}")
         else:

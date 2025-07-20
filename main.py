@@ -1,4 +1,4 @@
-from API.server import predictor
+from API.training_model.server_model import predictor
 from data.loadCsv import CSVLoader
 from model.naive_bayesian import NaiveBayes
 from prediction.checking import Prediction

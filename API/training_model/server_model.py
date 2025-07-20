@@ -5,6 +5,7 @@ from data.clean_data import Cleaner
 from model.naive_bayesian import NaiveBayes
 from prediction.checking import Prediction
 from prediction.evalution import ModelTester
+import pickle
 from logger.Logger import logger
 
 app = FastAPI()
@@ -19,17 +20,12 @@ logger.info("Initializing and training Naive Bayes model...")
 model = NaiveBayes(df, 'buys_computer')
 model.fit()
 
+with open("../saved_model.pkl", "wb") as f:
+    pickle.dump(model, f)
+
 predictor = Prediction(model)
 tester = ModelTester(model,predictor)
 
-@app.post("/predict")
-def predict(row: dict):
-    try:
-        pred = predictor.prediction(row)
-        return {"prediction": pred}
-    except Exception as e:
-        logger.error(f"Prediction error: {str(e)}")
-        return {'error': str(e)}
 
 @app.get('/test/full')
 def test_full_accuracy():
@@ -65,5 +61,5 @@ def get_features():
 
 if __name__ == '__main__':
     logger.info("🚀 Starting FastAPI server on http://127.0.0.1:8000")
-    uv.run('server:app', host='127.0.0.1', port=8000, reload=True)
+    uv.run('server_model:app', host='127.0.0.1', port=8000, reload=True)
 
