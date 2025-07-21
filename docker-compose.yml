@@ -1,0 +1,24 @@
+version: '3.8'
+
+services:
+  model-server:
+    build:
+      context: .
+      dockerfile: Dockerfile.model
+    volumes:
+      - ./shared_model:/app/shared_model
+    ports:
+      - "8000:8000"
+    container_name: model-server
+
+  prediction-server:
+    build:
+      context: .
+      dockerfile: Dockerfile.prediction
+    volumes:
+      - ./shared_model:/app/shared_model
+    ports:
+      - "8001:8000"
+    container_name: prediction-server
+    depends_on:
+      - model-server

@@ -1,4 +1,3 @@
-from data.loadCsv import CSVLoader
 from logger.Logger import logger
 from model.naive_bayesian import NaiveBayes
 
