@@ -18,7 +18,7 @@ services:
     volumes:
       - ./shared_model:/app/shared_model
     ports:
-      - "8001:8000"
+      - "8001:8001"
     container_name: prediction-server
     depends_on:
       - model-server
