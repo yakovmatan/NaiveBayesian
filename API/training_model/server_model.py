@@ -1,3 +1,4 @@
+import os
 import uvicorn as uv
 from fastapi import FastAPI
 from data.loadCsv import CSVLoader
@@ -11,7 +12,7 @@ from logger.Logger import logger
 app = FastAPI()
 
 logger.info("Loading and cleaning data...")
-data = CSVLoader("C:/Users/User/Downloads/buy_computer_data.csv")
+data = CSVLoader("buy_computer_data.csv")
 df = data.load()
 df = Cleaner(df).clean_data()
 
@@ -20,7 +21,9 @@ logger.info("Initializing and training Naive Bayes model...")
 model = NaiveBayes(df, 'buys_computer')
 model.fit()
 
-with open("../saved_model.pkl", "wb") as f:
+os.makedirs("../../shared_model", exist_ok=True)
+
+with open("../../shared_model/saved_model.pkl", "wb") as f:
     pickle.dump(model, f)
 
 predictor = Prediction(model)
@@ -61,5 +64,5 @@ def get_features():
 
 if __name__ == '__main__':
     logger.info("🚀 Starting FastAPI server on http://127.0.0.1:8000")
-    uv.run('server_model:app', host='127.0.0.1', port=8000, reload=True)
+    uv.run('server_model:app', host='0.0.0.0', port=8000, reload=True)
 
